@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 import { loginOrRegisterApiCall } from '../../api.js/api-calls';
+import AuthContext from '../../store/auth-context';
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
@@ -9,19 +10,31 @@ const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   // const [errorMessage, setErrorMessage] = useState('');
 
+  const authCtx = useContext(AuthContext);
+
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
 
   const submitHandler = async (event) => {
+    let data = null;
     event.preventDefault();
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = PasswordInputRef.current.value;
     setIsLoading(true);
     try {
-      await loginOrRegisterApiCall(enteredEmail, enteredPassword, isLogin);
+      data = await loginOrRegisterApiCall(
+        enteredEmail,
+        enteredPassword,
+        isLogin
+      );
     } catch (e) {
       console.log('called from Authform.js' + e);
+    }
+
+    if (data) {
+      authCtx.login(data.idToken);
+      console.log('This is the auth token value' + authCtx.token);
     }
     setIsLoading(false);
   };
