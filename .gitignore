@@ -13,3 +13,4 @@ yarn-error.log*
 /.changelog
 .npm/
 src/api.js/api-keys.js
+/api-keys.js
