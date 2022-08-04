@@ -1,4 +1,5 @@
 import { useState, useRef, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { loginOrRegisterApiCall } from '../../api.js/api-calls';
 import AuthContext from '../../store/auth-context';
 import classes from './AuthForm.module.css';
@@ -10,6 +11,7 @@ const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   // const [errorMessage, setErrorMessage] = useState('');
 
+  const history = useHistory();
   const authCtx = useContext(AuthContext);
 
   const switchAuthModeHandler = () => {
@@ -30,11 +32,13 @@ const AuthForm = () => {
       );
     } catch (e) {
       console.log('called from Authform.js' + e);
+      alert(e.message);
     }
 
     if (data) {
       authCtx.login(data.idToken);
-      console.log('This is the auth token value' + authCtx.token);
+      // use replace to stop back button
+      history.replace('/');
     }
     setIsLoading(false);
   };
