@@ -1,17 +1,22 @@
 import classes from './ProfileForm.module.css';
+import { useContext } from 'react';
+import { changePasswordApiCall } from '../../api.js/api-calls';
+import AuthContext from '../../store/auth-context';
 
-import { useRef } from 'React';
+import { useRef } from 'react';
 
 const ProfileForm = () => {
-  passwordInputRef = useRef();
+  const authCtx = useContext(AuthContext);
+  const passwordInputRef = useRef();
 
   const submitHandler = (event) => {
     event.preventDefault();
-    enteredPassword = passwordInputRef.current.value;
+    const enteredPassword = passwordInputRef.current.value;
+    changePasswordApiCall(authCtx.token, enteredPassword);
   };
 
   return (
-    <form className={classes.form} onSumbit={submitHandler}>
+    <form className={classes.form} onSubmit={submitHandler}>
       <div className={classes.control}>
         <label htmlFor="new-password">New Password</label>
         <input type="password" id="new-password" ref={passwordInputRef} />

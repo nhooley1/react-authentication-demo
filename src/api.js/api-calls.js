@@ -1,4 +1,8 @@
-import { SIGN_IN, REGISTER } from './api-keys';
+import {
+  SIGN_IN_ENDPOINT,
+  REGISTER_ENDPOINT,
+  PASSWORD_CHANGE_ENDPOINT,
+} from './api-enpoints';
 
 const loginOrRegisterApiCall = async (
   enteredEmail,
@@ -7,9 +11,9 @@ const loginOrRegisterApiCall = async (
 ) => {
   let url = '';
   if (isLogin) {
-    url = SIGN_IN;
+    url = SIGN_IN_ENDPOINT;
   } else {
-    url = REGISTER;
+    url = REGISTER_ENDPOINT;
   }
   const response = await fetch(url, {
     method: 'POST',
@@ -32,6 +36,20 @@ const loginOrRegisterApiCall = async (
   const data = await response.json();
 
   return data;
+};
+
+export const changePasswordApiCall = async (token, pword) => {
+  const response = await fetch(PASSWORD_CHANGE_ENDPOINT, {
+    method: 'POST',
+    body: JSON.stringify({
+      idToken: token,
+      password: pword,
+      returnSecureToken: false,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 };
 
 export { loginOrRegisterApiCall };
