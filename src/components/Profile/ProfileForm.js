@@ -1,4 +1,5 @@
 import classes from './ProfileForm.module.css';
+import { useHistory } from 'react-router-dom';
 import { useContext } from 'react';
 import { changePasswordApiCall } from '../../api.js/api-calls';
 import AuthContext from '../../store/auth-context';
@@ -6,6 +7,7 @@ import AuthContext from '../../store/auth-context';
 import { useRef } from 'react';
 
 const ProfileForm = () => {
+  const history = useHistory();
   const authCtx = useContext(AuthContext);
   const passwordInputRef = useRef();
 
@@ -13,6 +15,7 @@ const ProfileForm = () => {
     event.preventDefault();
     const enteredPassword = passwordInputRef.current.value;
     changePasswordApiCall(authCtx.token, enteredPassword);
+    history.replace('/');
   };
 
   return (
